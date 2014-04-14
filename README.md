@@ -1,4 +1,4 @@
 SimplexMethod
 =============
 
-realization of simplex method in cpp
+simplex method implementation in cpp
