@@ -6,14 +6,17 @@ using namespace std;
 
 size_t n; // base size
 size_t m; // non base size
-int* baseIndexes;
-int* nonBaseIndexes;
+size_t* baseIndexes;
+size_t* nonBaseIndexes;
 double** a;
 
 //coefs
 const double factorX = 0.5;
 const double factorY = 0.5;
 const double factorZ = 10;
+
+//moove all construction
+Point3D center(15, 15, 15);
 
 static Point3D vectorMultVect(const Point3D &p1, const Point3D &p2) {
     return Point3D(p1.y*p2.z - p1.z*p2.y, p1.z*p2.x - p1.x*p2.z, p1.x*p2.y - p1.y*p2.x);
@@ -27,8 +30,8 @@ static double vectorMultScolar(const Point3D &p1, const Point3D &p2) {
 void testInition() {
     n = 3;
     m = 4;
-    baseIndexes = new int[n];
-    nonBaseIndexes = new int[m];
+    baseIndexes = new size_t[n];
+    nonBaseIndexes = new size_t[m];
     a = new double*[n+1];
     for(size_t i = 0; i <=n; ++i) {
         a[i] = new double[m+1];
@@ -68,8 +71,6 @@ void testInition() {
 void parseBrs() {
     size_t pointsCount;
     m = 3;
-    //moove all construction for x,y,z >=0
-    Point3D center(10, 10, 10);
 
     //open file
     //FILE *input = fopen("./litleTest.txt", "r");
@@ -90,8 +91,8 @@ void parseBrs() {
     fscanf(input, "%d\n", &n);
 
     //simplex params init
-    baseIndexes = new int[n];
-    nonBaseIndexes = new int[m];
+    baseIndexes = new size_t[n];
+    nonBaseIndexes = new size_t[m];
     a = new double*[n+1];
     for(size_t i = 0; i <=n; ++i) {
         a[i] = new double[m+1];
@@ -216,6 +217,17 @@ int main() {
     int result = simplexMethod();
     if (result == 1) {
         printf("ans: %lf\n", a[0][m]);
+    }
+    for(size_t i = 0; i < n; ++i) {
+        if (baseIndexes[i] == 0) {
+            printf("x = %lf\n", a[i+1][m] - center.x);
+        }
+        if (baseIndexes[i] == 1) {
+            printf("y = %lf\n", a[i+1][m] - center.y);
+        }
+        if (baseIndexes[i] == 2) {
+            printf("z = %lf\n", a[i+1][m] - center.z);
+        }
     }
     return 0;
 }
